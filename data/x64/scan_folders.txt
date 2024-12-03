@@ -1,0 +1,11 @@
+C:/Windows/System32/
+C:/Windows/System32/drivers/
+C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Startup/
+C:/Users/*/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/
+C:/Users/*/Downloads/
+C:/Windows/
+C:/Windows/System/
+C:/Windows/System32/WindowsPowerShell/v1.0/
+C:/Windows/System32/Tasks/
+C:/Users/*/AppData/Local//*/
+C:/Users/*/AppData/Roaming/*/

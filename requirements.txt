@@ -1,0 +1,9 @@
+psutil
+yara-python
+pyvelociraptor
+pyzipper
+Jinja2
+oletools
+requests
+python-dotenv
+redis

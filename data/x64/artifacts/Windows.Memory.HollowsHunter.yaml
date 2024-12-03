@@ -1,0 +1,28 @@
+name: Windows.Memory.HollowsHunter
+
+sources:
+ - precondition:
+    SELECT OS from info() where OS = "windows"
+   queries:
+   
+   - |
+      LET binaries <= SELECT dirname(path=Exe) + '\\hollows_hunter64\\hollows_hunter.exe' as HLabsolutePath, dirname(path=Exe) as curDir FROM pslist(pid=getpid())
+      LET HollowsHunterExe <= str(str=binaries[0].HLabsolutePath)
+      LET HollowsHunterOutput <= str(str=binaries[0].curDir) + '\\..\\..\\tmp\\process\\hollowshunter'
+      LET ResultFile <= str(str=binaries[0].curDir) + '\\..\\..\\tmp\\process\\hollowshunter\\summary.json'
+
+
+      LET HollowHunterOutput <= SELECT Stdout
+      FROM execve(argv=[HollowsHunterExe,
+           "/hooks",
+           "/obfusc", 3,
+           "/shellc", 3, 
+           "/refl", 
+           "/data", 5,
+           "/iat", 2, 
+           "/dnet", 4,
+           "/json", "/dir", HollowsHunterOutput], sep="\n")
+
+      SELECT split(string=Stdout,sep=' ')[2] as Detected
+      FROM HollowHunterOutput
+      SELECT * FROM HollowsHunterOutput

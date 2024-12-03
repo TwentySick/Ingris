@@ -1,0 +1,4 @@
+velociraptor: tools\x64\velociraptor-v0.72.4-windows-amd64.exe
+artifacts: data\x64\artifacts
+server_config: config\server.config.yaml
+api_config: config\api.config.yaml

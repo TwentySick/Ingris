@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+
+		<title>Result Report</title>
+		<style>
+				body {
+					font-family: Arial, sans-serif;
+					margin: 20px;
+					font-size: 11px;
+				}
+				
+				h1 {
+					color: #b22222;
+				}
+				h2 {
+					color: #222831;
+					border-bottom: 2px solid #222831;
+					padding-bottom: 5px;
+				}
+				table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-bottom: 20px;
+				}
+				table, th, td {
+					border: 1px solid #222831;
+					padding: 8px;
+				}
+				th {
+					background-color: #DDDDDD;
+					color: #222831;
+				}
+				td {
+					text-align: left;
+					word-break: break-all;
+				}
+				.recommendation {
+					color: #006400;
+				}
+				.suspicious {
+					color: #F05454;
+				}
+				.malicious {
+					color: #8b0000;
+				}
+		        .hidden_row {
+		            display: none;
+        		}
+        		.selected {
+					background-color: coral;
+				}
+
+				.eventId_Table tr:hover {
+				    box-shadow: inset 0 0 0 99999px rgba(0,0,0,0.2);;
+				}
+
+				.eventIdDetailsTable {
+
+				}
+		</style>
+
+		<script type="text/javascript">
+			function toggleHighlight(row) { 
+				row.classList.toggle('selected'); 
+			} 
+			
+			function removeHighlight(row) {
+				row.classList.remove('selected'); 
+			}
+			
+			function showHideRow(row) {
+				$("#" + row).toggle();
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1> Result Report </h1>
+		<h2> Date: {{ start_time }} </h2>
+
+		<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #f9f9f9;">
+			<TR>
+				<TD style="width: 50%; vertical-align:top;">
+					<h2>Scan details</h2>
+					<table>
+						<TR>
+							<TH style="width: 15%;">Start time</TH>
+							<TD>{{ start_time }}</TD>
+						</TR>
+						<TR>
+							<TH style="width: 15%;">End time</TH>
+							<TD>{{ finish_time }}</TD>
+						</TR>
+					</table>
+				</TD>
+				
+				<TD style="width: 50%; vertical-align:top;">
+					<h2>Modules</h2>
+					<table>
+						
+						{% if file_scan_module != ""%}
+						<TR>
+							<TH style="width: 25%;">File Scan</TH>
+							<TD>{{ file_scan_module['suspicious_count'] }}</TD>
+						</TR>
+						{% endif %}
+						
+						{% if hollows_hunter != "" or susp_file_loaded != "" %}
+						<TR>
+							<TH style="width: 25%;">Process Scan</TH>
+							{% if hollows_hunter != "" and susp_file_loaded != "" %}
+								<TD>{{ susp_file_loaded['suspicious_count'] + hollows_hunter['suspicious_count'] }}</TD>
+							{% elif hollows_hunter == "" and susp_file_loaded != "" %}
+								<TD>{{ susp_file_loaded['suspicious_count'] }}</TD>
+							{% elif hollows_hunter != "" and susp_file_loaded == "" %}
+								<TD>{{ hollows_hunter['suspicious_count'] }}</TD>
+							{% else %}
+								<TD>0</TD>
+							{% endif %}
+						</TR>
+						{% endif %}
+
+						{% if eventlog_scan_module != "" %}
+						<TR>
+							<TH style="width: 25%">EventLogs Scan</TH>
+							<TD>{{ eventlog_scan_module['suspicious_count'] }}</TD>
+						</TR>
+						{% endif %}
+					</table>
+				</TD>
+
+			</TR>
+		</table>
+
+		<h2>Machine Info</h2>
+		<table>
+			<TR><TH style="width: 25%;">Host Name</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["Host Name"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+
+				<TH rowspan="12" style="width: 25%;">Network Card(s)</TH>
+				<TD rowspan="12" style="width: 25%;">
+					{% for network_card in machine_info["Network Card(s)"] %}
+						{{ network_card }}</br>
+					{% endfor %}
+				</TD>
+
+			</TR>
+			
+			<TR><TH style="width: 25%;">OS Name</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["OS Name"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">OS Version</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["OS Version"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">OS Manufacturer</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["OS Manufacturer"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">OS Configuration</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["OS Configuration"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">OS Build Type</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["OS Build Type"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">Original Install Date</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["Original Install Date"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">System Boot Time</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["System Boot Time"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">System Type</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["System Type"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">Domain</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["Domain"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+			
+			<TR><TH style="width: 25%;">Logon Server</TH>
+				<TD style="width: 25%;">
+					{% for d in machine_info["Logon Server"] %}
+						{{ d }}
+					{% endfor %}
+				</TD>
+			</TR>
+
+			<TR><TH style="width: 25%;">Hotfix(s)</TH>
+				<TD style="width: 25%;">
+					{% for hotfix in machine_info["Hotfix(s)"] %}
+						{{ hotfix }}</br>
+					{% endfor %}
+				</TD>
+			</TR>
+		</table>
+
+		{% if file_scan_module != "" %}
+			<h2>Suspicious file detected (from FileSystem Module)</h2>
+			<table>
+				<TR>
+					<TH class="suspicious" style="text-align:center; width: 25%;">Name</TH>
+					<TH style="text-align:center; width: 25%;">MD5 Hash</TH>
+					<TH style="text-align:center; width: 25%;">File Path</TH>
+					<TH style="text-align:center; width: 25%;">Detected by</TH>
+				</TR>
+				{% for susp in file_scan_module['suspicious'] %}
+				<TR>
+					<TD class="suspicious" style="text-align:center; width: 25%">{{ susp['Name'] }}</TD>
+					<TD style="text-align:center; width: 25%;"><a href="https://virustotal.com/gui/file/{{ susp['MD5'] }}" target="_blank" rel="noopener noreferrer">{{ susp['MD5'] }}</a></TD>
+					<TD style="width: 25%;">{{ susp['File path'] }}</TD>
+					<TD style="text-align:center; width: 25%;">{{ susp['Detected by'] }}</TD>
+				</TR>
+				{% endfor %}
+			</table>
+		{% endif %}
+
+		{% if eventlog_scan_module != "" %}
+			<h2>EventLogs Scan Results</h2>
+			<table id="eventIdTable" class="eventId_Table">
+				<TR>
+					<TH style="text-align:center; width: 15%;">Timestamp</TH>
+					<TH style="text-align:center; width: 5%;">EventID</TH>
+					<TH style="width: 40%;">RuleTitle</TH>
+					<TH style="text-align:center; width: 5%;">Level</TH>
+					<TH style="text-align:center; width: 10%;">MitreTags</TH>
+					<TH style="text-align:center; width: 15%;">SuspiciousLink</TH>
+					<TH style="text-align:center; width: 10%;">Status</TH>
+				</TR>
+
+				{% for susp in eventlog_scan_module['suspicious'] %}			
+				
+				<TR onclick="showHideRow('hidden_row_{{ loop.index }}'); toggleHighlight(this)" ondblclick="removeHighlight(this)">
+					<TD style="text-align: center; ">{{ susp['Timestamp'] }}</TD>
+					<TD style="text-align: center; ">{{ susp['EventID'] }}</TD>
+					<TD>{{ susp['RuleTitle'] }}</TD>
+					<TD style="text-align: center; ">{{ susp['Level'] }}</TD>
+					{% if susp['MitreTags'] != None %}
+						<TD style="text-align: center; ">
+						{% for susp in susp['MitreTags'] %}
+							{{ susp }}
+							{% if not loop.last %}
+							,
+							{% endif %}
+						{% endfor %}
+						</TD>
+					{% else %}
+					<TD style="text-align: center; ">Unknown</TD>
+					{% endif %}
+
+					{% if susp['SuspiciousLink'] != "" %}
+						<TD>{{ susp['SuspiciousLink'] }}</TD>
+					{% else %}
+						<TD style="text-align: center;">Unknown</TD>
+					{% endif %}
+
+					{% if susp['Status'] != "" %}
+						<TD style="text-align: center;">{{ susp['Status'] }}</TD>
+					{% else %}
+						<TD style="text-align: center;">Unknown</TD>
+					{% endif %}
+				</TR>
+
+				{% if susp['Details'] != {} or susp['ExtraFieldInfo'] != {} %}
+				<TR id="hidden_row_{{ loop.index }}" class="hidden_row">
+					<TD colspan="7">
+						{% if susp['Details'] != {} %}
+						<table class="eventIdDetailsTable">
+							<TR>
+								<TH colspan="2" style="text-align: center;">Details</TH>
+							</TR>
+
+							{% for title, detail in susp['Details'].items() %}
+							<TR>
+								<TH style="text-align:center; width: 10%;">{{ title }}</TH>
+								<TD>{{ detail }}</TD>
+							</TR>
+							{% endfor %}
+						</table>
+						{% endif %}
+
+						{% if susp['ExtraFieldInfo'] != {} %}
+						<table class="eventIdDetailsTable">
+							<TR>
+								<TH colspan="2" style="text-align: center;">ExtraFieldInfo</TH>
+							</TR>
+
+							{% for title, detail in susp['ExtraFieldInfo'].items() %}
+							<TR>
+								<TH style="text-align:center; width: 10%;">{{ title }}</TH>
+								<TD>{{ detail }}</TD>
+							</TR>
+							{% endfor %}
+						</table>
+						{% endif %}
+					</TD>
+				</TR>
+				{% endif %}
+
+				{% endfor %}
+			</table>
+		{% endif %}
+
+		{% if susp_file_loaded != "" %}
+			<h2>Suspicious file loaded</h2>
+			<table>
+				<TR>
+					<TH style="text-align:center; width: 10%;">PID</TH>
+					<TH style="text-align:center; width: 30%;">Name</TH>
+					<TH style="text-align:center; width: 30%;">Command Line</TH>
+					<TH class="suspicious" style="text-align:center; width: 30%;">Suspicious File</TH>
+				</TR>
+				{% for susp in susp_file_loaded['suspicious'] %}
+				<TR>
+					<TD style="text-align:center; width: 10%">{{ susp['Pid'] }}</TD>
+					<TD style="width: 30%;">{{ susp['Name'] }}</TD>
+					<TD style="width: 30%;">{{ susp['CommandLine'] }}</TD>
+					<TD class="suspicious" style="width: 30%;">{{ susp['Suspicious File'] }}</TD>
+				</TR>
+				{% endfor %}
+			</table>
+		{% endif %}
+
+		{% if hollows_hunter != "" %}
+			<h2>Process Injected</h2>
+			<table>
+				<TR>
+					<TH style="text-align:center; width: 10%;">PID</TH>
+					<TH style="text-align:center; width: 30%;">Name</TH>
+					<TH style="text-align:center; width: 30%;">Image Fullpath</TH>
+					<TH class="suspicious" style="text-align:center; width: 30%;">Suspicious Module (Triggered by iat_scan)</TH>
+				</TR>
+				{% for susp in hollows_hunter['suspicious'] %}
+					{% if susp['Image Fullpath'] != '' and susp['Suspicious Module'] != [] %}
+						<TR>
+							<TD style="text-align:center; width: 10%">{{ susp['pid'] }}</TD>
+							<TD style="width: 30%;">{{ susp['name'] }}</TD>
+							<TD style="width: 30%;">{{ susp['Image Fullpath'] }}</TD>
+							<TD class="suspicious" style="width: 30%;">
+								{% for susp_module in susp['Suspicious Module'] %}
+									{{ susp_module }}</br>
+								{% endfor %}
+							</TD>
+						</TR>
+					{% endif %}
+				{% endfor %}	
+			</table>
+		{% endif %}
+
+	</body>
+</html>
