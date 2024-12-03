@@ -36,18 +36,18 @@ For the most comprehensive and valuable analysis, we strongly recommend using *S
 ## Requirements
 
 - **Administrator Privileges:** **Ingris** requires administrator privileges to function correctly. This is because certain functionalities, such as accessing system resources, necessitate elevated permissions.
-- **VirusTotal API Key:** **Ingris** requires your VirusTotal API Key. Get your own API Key and edit on `config\config.env` file
+- **VirusTotal API Key:** **Ingris** requires your VirusTotal API Key. Get your API Key and edit on `config\config.env` file
    - Example: 
       - Your VirusTotal API Key is: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
       - Content of `config\config.env`: 
 ```API_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa```
 - **Port 8001:** **Ingris** utilizes port 8001 for communication. Please ensure that this port is open and not in use by any other applications on your system. If port 8001 is already occupied, you might need to:
   - Stop any conflicting applications: Identify and stop any applications currently using port 8001.
-  - Or configure a different port by your own
+  - Or configure a different port on your own
 
 ## Downloads
 
-Please download the latest stable version of Ingris with compiled binaries or compile the source code from the [Release]() page
+Please download the latest stable version of Ingris with compiled binaries or compile the source code from the [Release](https://github.com/TwentySick/Ingris/releases) page
 
 
 ## Git Cloning
@@ -66,4 +66,4 @@ pip install -r requirements.txt
 
 
 ## Thanks
-Give many thanks to KienTD and AnhDT for collab with me to developing this tool.
+Many thanks to KienTD and AnhDT for collaborating with me to develop this tool.
