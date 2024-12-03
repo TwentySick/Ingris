@@ -10,7 +10,7 @@ import plugins.LogFiles as LogFiles
 import plugins.EventLogs as EventLogs
 
 def showVersion():
-	print("v0.0.1")
+	print("v1.0.0")
 
 def get_args():
 	core.preparing.display_banner()
