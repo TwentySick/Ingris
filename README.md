@@ -44,6 +44,11 @@ For the most comprehensive and valuable analysis, we strongly recommend using *S
 - **Port 8001:** **Ingris** utilizes port 8001 for communication. Please ensure that this port is open and not in use by any other applications on your system. If port 8001 is already occupied, you might need to:
   - Stop any conflicting applications: Identify and stop any applications currently using port 8001.
   - Or configure a different port on your own
+- **Update Hayabusa Rules:** When you clone this repo to your local machine, you need to update Hayabusa Rules for using EventLogsScan module:
+  - Run `tools\x64\hayabusa\hayabusa-2.19.0-win-x64.exe`with option `update-rules` and do the same with `tools\x32\hayabusa\hayabusa-2.19.0-win-x86.exe`
+  - Full command:
+    - x64: `tools\x64\hayabusa\hayabusa-2.19.0-win-x64.exe update-rules`
+    - x32: `tools\x32\hayabusa\hayabusa-2.19.0-win-x86.exe update-rules`
 
 ## Downloads
 
